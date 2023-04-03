@@ -38,7 +38,7 @@ app.post("/api/notes", (req, res) => {
 
 
   db.push({
-    id: uuidv4(),
+    noteId: uuidv4(),
     title: req.body.title,
     text: req.body.text
   })
