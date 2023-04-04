@@ -1,8 +1,8 @@
-let noteTitle;
-let noteText;
-let saveNoteBtn;
-let newNoteBtn;
-let noteList;
+let noteTitle = $('.note-title');
+let noteText = $('.note-textarea');
+let saveNoteBtn = $('.save-note');
+let newNoteBtn = $('.new-note');
+let noteList = $('.list-container .list-group');
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -43,7 +43,7 @@ const saveNote = (note) =>
   });
 
 const deleteNote = (id) =>
-  fetch(`/api/notes/${id}`, {
+  fetch(`/api/notes/${noteId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -178,6 +178,9 @@ if (window.location.pathname === '/notes') {
   newNoteBtn.addEventListener('click', handleNewNoteView);
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
   noteText.addEventListener('keyup', handleRenderSaveBtn);
+  noteList.addEventListener('click', ".delete-note", handleNoteDelete);
+  noteList.addEventListener('click', ".list-group-item", handleNoteView);
 }
 
+// Gets and renders list of notes
 getAndRenderNotes();

@@ -45,7 +45,7 @@ app.post("/api/notes", (req, res) => {
 
   fs.writeFile("./db/db.json", JSON.stringify(db, null, 4), () => {
 
-    res.send("hi")
+    res.send("Writing to db.json!")
   })
 })
 
@@ -55,6 +55,7 @@ app.get('*', (req, res) =>
   res.sendFile(path.join(__dirname, 'public/index.html'))
 );
 
+app.delete('/api/notes/:noteId', (req, res) => res.json(`DELETE route`));
 
 app.listen(PORT, () => {
   console.log("Server is running!")
