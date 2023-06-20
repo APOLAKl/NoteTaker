@@ -34,7 +34,7 @@ app.post("/api/notes", (req, res) => {
   console.log(req.body);
 
   db.push({
-    noteId: uuidv4(),
+    id: uuidv4(),
     title: req.body.title,
     text: req.body.text,
   });
@@ -49,17 +49,19 @@ app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "public/index.html"))
 );
 
-app.delete("/api/notes/:noteId", (req, res) => {
-  fs.readFile("./db/db.json", "utf8", (err, data) => {
-    if (err) throw err;
-    let notes = JSON.parse(data);
-    const newNotes = notes.filter(
-      (note) => note.id !== parseInt(req.params.id)
-    );
+app.delete('/api/notes/:id', (req, res) => {
+  fs.readFile('./db/db.json', 'utf8', (err, data) => {
+      
+      if (err) throw err;
+      let notes = JSON.parse(data);
+      console.log(notes);
+      const newNotes = notes.filter((note) => note.id !== req.params.id);
 
-    fs.writeFile("./db/db.json", JSON.stringify(newNotes, null, 4), () => {
-      res.send("deleted sucessfully!");
-    });
+      
+
+      fs.writeFile('./db/db.json', JSON.stringify(newNotes), () => {
+          res.send('deleted sucessfully!');
+      });
   });
 });
 

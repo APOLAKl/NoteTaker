@@ -4,7 +4,7 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-// 
+// = $('./note-title')
 // = $('.note-textarea')
 // = $('.save-note')
 // = $('.new-note')
