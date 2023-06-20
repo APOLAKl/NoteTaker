@@ -1,8 +1,16 @@
-let noteTitle = $('.note-title');
-let noteText = $('.note-textarea');
-let saveNoteBtn = $('.save-note');
-let newNoteBtn = $('.new-note');
-let noteList = $('.list-container .list-group');
+let noteTitle;
+let noteText;
+let saveNoteBtn;
+let newNoteBtn;
+let noteList;
+
+// 
+// = $('.note-textarea')
+// = $('.save-note')
+// = $('.new-note')
+// = $('.list-container .list-group')
+
+
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -43,7 +51,7 @@ const saveNote = (note) =>
   });
 
 const deleteNote = (id) =>
-  fetch(`/api/notes/${noteId}`, {
+  fetch(`/api/notes/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

@@ -1,9 +1,9 @@
-const express = require('express');
-const path = require('path');
+const express = require("express");
+const path = require("path");
 const fs = require("fs");
-const {v4: uuidv4} = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 
-const db = require("./db/db.json")
+const db = require("./db/db.json");
 
 const app = express();
 
@@ -15,48 +15,54 @@ const PORT = process.env.PORT || 3001;
 //     .substring(1);
 // };
 
-
-// middleware
+// Middleware
 app.use(express.static("public"));
 
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
 // GET Route for notes page
-app.get('/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, '/public/notes.html'))
+app.get("/notes", (req, res) =>
+  res.sendFile(path.join(__dirname, "/public/notes.html"))
 );
 
-
-app.get('/api/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, 'db/db.json'))
+app.get("/api/notes", (req, res) =>
+  res.sendFile(path.join(__dirname, "db/db.json"))
 );
 
 app.post("/api/notes", (req, res) => {
-  console.log(req.body)
-
+  console.log(req.body);
 
   db.push({
     noteId: uuidv4(),
     title: req.body.title,
-    text: req.body.text
-  })
+    text: req.body.text,
+  });
 
   fs.writeFile("./db/db.json", JSON.stringify(db, null, 4), () => {
-
-    res.send("Writing to db.json!")
-  })
-})
-
+    res.send("Writing to db.json!");
+  });
+});
 
 // Route to direct users to a HTML page
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public/index.html'))
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "public/index.html"))
 );
 
-app.delete('/api/notes/:noteId', (req, res) => res.json(`DELETE route`));
+app.delete("/api/notes/:noteId", (req, res) => {
+  fs.readFile("./db/db.json", "utf8", (err, data) => {
+    if (err) throw err;
+    let notes = JSON.parse(data);
+    const newNotes = notes.filter(
+      (note) => note.id !== parseInt(req.params.id)
+    );
+
+    fs.writeFile("./db/db.json", JSON.stringify(newNotes, null, 4), () => {
+      res.send("deleted sucessfully!");
+    });
+  });
+});
 
 app.listen(PORT, () => {
-  console.log("Server is running!")
-})
+  console.log("Server is running!");
+});
